@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruins of Stone</title>
+<meta name="description" content="Ruins of Stone is a free open-world action RPG set in a ruined city at night. Four classes, twelve quests, three bosses and co-op for up to 4 players. Download for Windows and Linux.">
+<link rel="canonical" href="https://knisstech.github.io/pub/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://knisstech.github.io/pub/">
+<meta property="og:title" content="Ruins of Stone">
+<meta property="og:description" content="Free open-world action RPG. A ruined city at night, four classes, three bosses, co-op for up to 4 players. Windows and Linux.">
+<meta property="og:image" content="https://knisstech.github.io/pub/img/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b0e14">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Ruins of Stone",
+  "url": "https://knisstech.github.io/pub/",
+  "image": "https://knisstech.github.io/pub/img/hero.jpg",
+  "description": "Free open-world action RPG set in a ruined city at night. Four classes, twelve quests, three bosses and co-op for up to 4 players.",
+  "genre": ["Action RPG", "Open world"],
+  "gamePlatform": ["Windows", "Linux"],
+  "operatingSystem": "Windows 10, Windows 11, Linux",
+  "applicationCategory": "Game",
+  "inLanguage": ["en", "pt-BR"],
+  "playMode": ["SinglePlayer", "CoOp", "MultiPlayer"],
+  "numberOfPlayers": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 4},
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Big+Shoulders+Display:wght@600;800&family=Big+Shoulders+Stencil+Display:wght@800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a night street at eye level. Full-bleed screenshots from the game
+   alternate with narrow text columns; section labels borrow the in-game HUD
+   banner ("Downtown Streets - bandits +0 levels"). One dark look on purpose. */
+:root {
+  color-scheme: dark;
+  --night: #0b0e14;      /* page ground: the night sky over the city */
+  --asphalt: #131823;    /* raised surfaces */
+  --kerb: #262e3d;       /* hairlines and borders */
+  --moon: #e3e7ee;       /* main text */
+  --concrete: #9aa3b3;   /* secondary text */
+  --sodium: #ffa646;     /* accent: fire barrels and street lamps */
+  --sodium-ink: #1a1006; /* text on the accent */
+  --blood: #e01b24;      /* the red of the game icon and the health bar */
+  --c-marksman: #f2b833; /* class colours, taken from the game */
+  --c-guardian: #599ef2;
+  --c-scout: #4dd173;
+  --c-medic: #f25966;
+
+  --f-stencil: "Big Shoulders Stencil Display", Impact, "Arial Narrow Bold", sans-serif;
+  --f-display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Barlow", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: clamp(1.7rem, 1.2rem + 2vw, 2.4rem);
+  --step-3: clamp(2.4rem, 1.4rem + 4vw, 3.8rem);
+  --step-4: clamp(3.4rem, 1.6rem + 8.5vw, 8.2rem);
+
+  --measure: 64ch;
+  --wide: 1160px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--moon);
+  font-family: var(--f-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+figure { margin: 0; }
+a { color: var(--sodium); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--sodium); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+/* Language switch: the page carries both languages, the root picks one. */
+html:not([data-lang="pt"]) body [lang="pt"],
+html[data-lang="pt"] body [lang="en"] { display: none !important; }
+
+.wrap {
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- HUD banner: the zone label the game prints at the top ---------- */
+.zone {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0 0.6em;
+  align-items: baseline;
+  font-family: var(--f-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  color: var(--concrete);
+}
+.zone b { color: var(--moon); font-weight: 500; }
+.zone .lv { color: var(--sodium); }
+.zone .safe { color: var(--c-scout); }
+
+/* ---------- header ---------- */
+.top {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.top .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 18px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--moon);
+  text-decoration: none;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.brand img { width: 30px; height: 30px; }
+.nav { display: flex; align-items: center; gap: 22px; }
+.nav .links { display: flex; align-items: center; gap: 22px; }
+.nav a {
+  color: var(--moon);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.nav a:hover { color: var(--sodium); }
+.lang {
+  display: inline-flex;
+  border: 1px solid var(--kerb);
+  border-radius: 3px;
+  overflow: hidden;
+  background: rgba(11, 14, 20, 0.6);
+}
+.lang button {
+  font: 500 0.8rem var(--f-mono);
+  letter-spacing: 0.06em;
+  color: var(--concrete);
+  background: transparent;
+  border: 0;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.lang button[aria-pressed="true"] { color: var(--sodium-ink); background: var(--sodium); }
+@media (max-width: 760px) { .nav .links { display: none; } }
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  min-height: clamp(520px, 52vw, 760px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  z-index: -2;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to top, var(--night) 4%, rgba(11, 14, 20, 0.72) 34%, rgba(11, 14, 20, 0) 64%),
+    linear-gradient(to bottom, rgba(11, 14, 20, 0.7), rgba(11, 14, 20, 0) 22%);
+}
+.hero .wrap { width: 100%; padding-block: 120px 56px; }
+.hero h1 {
+  font-family: var(--f-stencil);
+  font-weight: 800;
+  font-size: var(--step-4);
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-block: 14px 18px;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
+}
+.hero h1 span { display: block; }
+.hero h1 .of {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 0.3em;
+  letter-spacing: 0.4em;
+  color: var(--concrete);
+  margin-block: 0.2em 0.1em;
+}
+.hero .pitch { max-width: 46ch; font-size: var(--step-1); line-height: 1.45; color: var(--moon); }
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+  margin-top: 30px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 24px 15px 20px;
+  background: var(--sodium);
+  color: var(--sodium-ink);
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 3px;
+  box-shadow: 0 0 0 0 rgba(255, 166, 70, 0.0), 0 10px 40px -10px rgba(255, 166, 70, 0.55);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 0 0 4px rgba(255, 166, 70, 0.18), 0 14px 46px -10px rgba(255, 166, 70, 0.7); }
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn small { font: 500 0.78rem var(--f-mono); letter-spacing: 0; text-transform: none; opacity: 0.75; }
+.cta .alt { font-size: var(--step--1); color: var(--concrete); }
+.cta .alt a { color: var(--moon); }
+.note-os {
+  margin-top: 14px;
+  font-size: var(--step--1);
+  color: var(--concrete);
+  max-width: 60ch;
+}
+
+/* ---------- fact strip ---------- */
+.facts {
+  border-block: 1px solid var(--kerb);
+  background: var(--asphalt);
+}
+.facts ul {
+  list-style: none;
+  margin-block: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  padding-block: 0;
+}
+.facts li {
+  padding: 20px 18px;
+  border-left: 1px solid var(--kerb);
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+.facts li:first-child { border-left: 0; padding-left: 0; }
+.facts .n {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--moon);
+  font-variant-numeric: tabular-nums;
+}
+.facts .t { font-size: var(--step--1); color: var(--concrete); line-height: 1.4; }
+@media (max-width: 860px) {
+  .facts ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts li, .facts li:first-child { border-left: 0; padding-left: 0; border-top: 1px solid var(--kerb); }
+  .facts li:nth-child(-n+2) { border-top: 0; }
+  .facts li:last-child { grid-column: 1 / -1; }
+}
+
+/* ---------- sections ---------- */
+section { padding-block: clamp(64px, 9vw, 120px); }
+.head { display: grid; gap: 12px; margin-bottom: 40px; max-width: var(--measure); }
+.head h2 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: var(--step-3);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.head p { color: var(--concrete); }
+
+/* ---------- download ---------- */
+.platforms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 760px) { .platforms { grid-template-columns: minmax(0, 1fr); } }
+.platform {
+  background: var(--asphalt);
+  border: 1px solid var(--kerb);
+  border-radius: 4px;
+  padding: 26px;
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  min-width: 0;
+}
+.platform.mine { border-color: var(--sodium); }
+.platform header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.platform h3 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.platform .tag {
+  font: 500 0.75rem var(--f-mono);
+  color: var(--sodium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.platform .tag[hidden] { display: none; }
+.file {
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+  color: var(--concrete);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  overflow-wrap: anywhere;
+}
+.file b { color: var(--moon); font-weight: 500; }
+.steps { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; color: var(--moon); }
+.steps li::marker { font-family: var(--f-mono); color: var(--sodium); }
+code, kbd {
+  font-family: var(--f-mono);
+  font-size: 0.86em;
+  background: var(--night);
+  border: 1px solid var(--kerb);
+  border-radius: 3px;
+  padding: 1px 6px;
+  overflow-wrap: anywhere;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+pre {
+  margin: 0;
+  overflow-x: auto;
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+  background: var(--night);
+  border: 1px solid var(--kerb);
+  border-radius: 3px;
+  padding: 10px 12px;
+}
+.platform .btn { justify-self: start; font-size: 1.15rem; padding: 12px 20px 12px 16px; }
+.smart {
+  border-left: 2px solid var(--kerb);
+  padding-left: 14px;
+  font-size: var(--step--1);
+  color: var(--concrete);
+}
+.smart b { color: var(--moon); font-weight: 600; }
+
+/* ---------- screenshot band ---------- */
+.band { padding-block: 0; }
+.band figure { margin: 0; position: relative; }
+.band img { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; object-position: 50% 0%; }
+.band figcaption { position: absolute; left: 0; right: 0; bottom: 0; }
+.band figcaption .wrap { padding-block: 16px; }
+.band figcaption .zone {
+  background: rgba(11, 14, 20, 0.78);
+  padding: 6px 12px;
+  border-radius: 3px;
+}
+
+/* ---------- classes ---------- */
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+@media (max-width: 1000px) { .classes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .classes-grid { grid-template-columns: minmax(0, 1fr); } }
+.class {
+  border-top: 3px solid var(--c);
+  background: var(--asphalt);
+  padding: 20px 20px 22px;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 14px;
+  min-width: 0;
+}
+.class h3 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 1.9rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--c);
+}
+.class .role { color: var(--concrete); font-size: var(--step--1); line-height: 1.45; min-height: 2.9em; }
+.stats { display: grid; gap: 7px; }
+.stat { display: grid; grid-template-columns: 4.6em 2.4em 1fr; align-items: center; gap: 8px; }
+.stat .sk { font: 500 0.72rem var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--concrete); }
+.stat .sv { margin: 0; font: 500 0.9rem var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.stat .bar { height: 6px; background: var(--night); border-radius: 1px; overflow: hidden; }
+.stat .bar i { display: block; height: 100%; width: var(--v); background: var(--c); }
+.ability { border-top: 1px solid var(--kerb); padding-top: 12px; display: grid; gap: 4px; align-content: start; }
+.ability .k { font: 500 0.72rem var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--concrete); }
+.ability b { font-weight: 600; }
+.ability p { font-size: var(--step--1); color: var(--concrete); line-height: 1.45; }
+.classes-shot { margin-top: 28px; border: 1px solid var(--kerb); border-radius: 4px; overflow: hidden; }
+.classes-shot img { width: 100%; aspect-ratio: 16 / 6; object-fit: cover; }
+.aside { margin-top: 18px; color: var(--concrete); font-size: var(--step--1); max-width: var(--measure); }
+
+/* ---------- world ---------- */
+.regions { display: grid; gap: 22px; }
+.region {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+.region:nth-child(even) .shot { order: 2; }
+@media (max-width: 820px) {
+  .region { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .region:nth-child(even) .shot { order: 0; }
+}
+.region .shot { border-radius: 4px; overflow: hidden; border: 1px solid var(--kerb); }
+.region .shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.region .txt { display: grid; gap: 10px; min-width: 0; max-width: 52ch; }
+.region h3 { font-family: var(--f-display); font-weight: 800; font-size: var(--step-2); line-height: 1; text-transform: uppercase; }
+.region p { color: var(--concrete); }
+.rule {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+@media (max-width: 820px) { .rule { grid-template-columns: minmax(0, 1fr); } }
+.rule div { background: var(--asphalt); border: 1px solid var(--kerb); border-radius: 4px; padding: 22px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.rule h3 { font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; text-transform: uppercase; line-height: 1.05; }
+.rule p { color: var(--concrete); font-size: var(--step--1); line-height: 1.55; }
+
+/* ---------- bosses ---------- */
+.bosses { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--kerb); }
+.boss {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+  gap: 8px 28px;
+  padding-block: 22px;
+  border-bottom: 1px solid var(--kerb);
+  align-items: baseline;
+}
+@media (max-width: 760px) { .boss { grid-template-columns: minmax(0, 1fr) auto; } .boss p { grid-column: 1 / -1; grid-row: 2; } }
+.boss h3 { font-family: var(--f-display); font-weight: 800; font-size: 1.55rem; line-height: 1.05; text-transform: uppercase; }
+.boss h3 small { display: block; font: 400 0.8rem var(--f-mono); color: var(--concrete); text-transform: none; margin-top: 4px; }
+.boss p { color: var(--concrete); font-size: var(--step--1); }
+.phases { display: flex; gap: 4px; align-items: center; }
+.phases i { width: 22px; height: 8px; background: var(--blood); border-radius: 1px; }
+.phases span { font: 500 0.75rem var(--f-mono); color: var(--concrete); margin-left: 6px; white-space: nowrap; }
+
+/* ---------- co-op ---------- */
+.coop { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+@media (max-width: 860px) { .coop { grid-template-columns: minmax(0, 1fr); } }
+.coop > div { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.coop h3 { font-family: var(--f-display); font-weight: 800; font-size: var(--step-2); text-transform: uppercase; line-height: 1; }
+.coop p { color: var(--concrete); }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--kerb); vertical-align: top; }
+th { font: 500 0.72rem var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--concrete); }
+td:first-child { white-space: nowrap; color: var(--moon); font-weight: 600; }
+td { color: var(--concrete); }
+
+/* ---------- help ---------- */
+.faq { display: grid; gap: 0; border-top: 1px solid var(--kerb); max-width: 860px; }
+.faq details { border-bottom: 1px solid var(--kerb); }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 36px 18px 0;
+  position: relative;
+  font-weight: 600;
+  font-size: var(--step-1);
+  line-height: 1.3;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 14px;
+  font: 400 1.6rem var(--f-mono);
+  color: var(--sodium);
+}
+.faq details[open] summary::after { content: "\2212"; }
+.faq .a { padding: 0 0 20px; color: var(--concrete); display: grid; gap: 10px; max-width: var(--measure); }
+
+/* ---------- footer ---------- */
+footer { border-top: 1px solid var(--kerb); padding-block: 36px 48px; color: var(--concrete); font-size: var(--step--1); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; align-items: center; }
+footer .brand { font-size: 1rem; }
+footer a { color: var(--moon); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <img src="favicon.svg" alt="" width="30" height="30">
+      Ruins of Stone
+    </a>
+    <nav class="nav" aria-label="Main">
+      <span class="links">
+        <a href="#download"><span lang="en">Download</span><span lang="pt">Baixar</span></a>
+        <a href="#classes"><span lang="en">Classes</span><span lang="pt">Classes</span></a>
+        <a href="#world"><span lang="en">World</span><span lang="pt">Mundo</span></a>
+        <a href="#coop"><span lang="en">Co-op</span><span lang="pt">Cooperativo</span></a>
+        <a href="#help"><span lang="en">Help</span><span lang="pt">Ajuda</span></a>
+      </span>
+      <div class="lang" role="group" aria-label="Language / Idioma">
+        <button type="button" id="lang-en" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" id="lang-pt" data-set-lang="pt" aria-pressed="false">PT</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="hero">
+  <img src="img/hero.jpg" alt="Night street in the ruined city: fire barrels glowing on wet asphalt under a sky full of stars" width="1600" height="900" fetchpriority="high">
+  <div class="wrap">
+    <p class="zone">
+      <b lang="en">Survivors' Camp</b><b lang="pt">Acampamento dos Sobreviventes</b>
+      <span class="safe" lang="en">- safe area</span><span class="safe" lang="pt">- área segura</span>
+    </p>
+    <h1><span>Ruins</span><span class="of">of</span><span>Stone</span></h1>
+    <p class="pitch" lang="en">An open-world action RPG in a ruined city at night. Pick a class, take on the bandits who run the streets, and bring up to three friends along.</p>
+    <p class="pitch" lang="pt">Um RPG de ação em mundo aberto numa cidade em ruínas, de madrugada. Escolha uma classe, enfrente os bandidos que tomaram as ruas e chame até três amigos.</p>
+    <div class="cta">
+      <a class="btn" id="hero-btn" href="download/RuinsOfStone-Windows.zip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
+        <span>
+          <span lang="en">Download for <span class="os-name">Windows</span></span><span lang="pt">Baixar para <span class="os-name">Windows</span></span>
+          <br><small class="os-size">.zip · 29 MB</small>
+        </span>
+      </a>
+      <span class="alt">
+        <span lang="en">Free. Nothing to install.</span><span lang="pt">Grátis. Não precisa instalar nada.</span>
+        <a href="#download" id="hero-other"><span lang="en">Linux version</span><span lang="pt">Versão para Linux</span></a>
+      </span>
+    </div>
+    <p class="note-os" id="note-os" hidden>
+      <span lang="en">Ruins of Stone runs on Windows and Linux PCs. Open this page on your computer to download it.</span>
+      <span lang="pt">Ruins of Stone roda em PCs com Windows e Linux. Abra esta página no computador para baixar.</span>
+    </p>
+  </div>
+</div>
+
+<div class="facts">
+  <ul class="wrap">
+    <li><span class="n">4</span><span class="t" lang="en">classes, each with its own ability</span><span class="t" lang="pt">classes, cada uma com habilidade própria</span></li>
+    <li><span class="n">12</span><span class="t" lang="en">chained quests, from level 1 to 13</span><span class="t" lang="pt">missões encadeadas, do nível 1 ao 13</span></li>
+    <li><span class="n">3</span><span class="t" lang="en">bosses that change phase as they lose health</span><span class="t" lang="pt">chefes que mudam de fase conforme perdem vida</span></li>
+    <li><span class="n">1–4</span><span class="t" lang="en">players, split screen or over your home network</span><span class="t" lang="pt">jogadores, em tela dividida ou na rede de casa</span></li>
+    <li><span class="n">EN · PT</span><span class="t" lang="en">English and Portuguese, switch any time</span><span class="t" lang="pt">Inglês e português, troca a qualquer hora</span></li>
+  </ul>
+</div>
+
+<section id="download">
+  <div class="wrap">
+    <div class="head">
+      <h2><span lang="en">Download</span><span lang="pt">Baixar</span></h2>
+      <p lang="en">The whole game is a single file. You don't need Godot or anything else: unzip it and play.</p>
+      <p lang="pt">O jogo inteiro é um arquivo só. Não precisa da Godot nem de nada: descompacte e jogue.</p>
+    </div>
+    <div class="platforms">
+      <article class="platform" id="pf-win">
+        <header>
+          <h3>Windows</h3>
+          <span class="tag" hidden><span lang="en">Your system</span><span lang="pt">Seu sistema</span></span>
+        </header>
+        <p class="file"><b>RuinsOfStone-Windows.zip</b><span>29 MB</span><span>Windows 10 / 11 · 64-bit</span></p>
+        <a class="btn" href="download/RuinsOfStone-Windows.zip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
+          <span lang="en">Download .zip</span><span lang="pt">Baixar .zip</span>
+        </a>
+        <ol class="steps" lang="en">
+          <li>Right-click the zip and choose <b>Extract All</b>.</li>
+          <li>Open the folder and double-click <code>RuinsOfStone.exe</code>.</li>
+        </ol>
+        <ol class="steps" lang="pt">
+          <li>Clique com o botão direito no zip e escolha <b>Extrair tudo</b>.</li>
+          <li>Abra a pasta e clique duas vezes em <code>RuinsOfStone.exe</code>.</li>
+        </ol>
+        <p class="smart" lang="en">The first time, Windows may say <b>"Windows protected your PC"</b>. It shows that for any program without a paid code signature. Click <b>More info</b>, then <b>Run anyway</b>.</p>
+        <p class="smart" lang="pt">Na primeira vez o Windows pode mostrar <b>"O Windows protegeu o seu PC"</b>. Isso aparece para qualquer programa sem assinatura digital paga. Clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>.</p>
+      </article>
+      <article class="platform" id="pf-linux">
+        <header>
+          <h3>Linux</h3>
+          <span class="tag" hidden><span lang="en">Your system</span><span lang="pt">Seu sistema</span></span>
+        </header>
+        <p class="file"><b>RuinsOfStone-Linux.zip</b><span>23 MB</span><span>x86_64</span></p>
+        <a class="btn" href="download/RuinsOfStone-Linux.zip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M4 21h16"/></svg>
+          <span lang="en">Download .zip</span><span lang="pt">Baixar .zip</span>
+        </a>
+        <ol class="steps" lang="en">
+          <li>Unzip it and open a terminal in the folder.</li>
+          <li>Run:</li>
+        </ol>
+        <ol class="steps" lang="pt">
+          <li>Descompacte e abra um terminal na pasta.</li>
+          <li>Rode:</li>
+        </ol>
+        <pre><code>chmod +x RuinsOfStone.x86_64
+./RuinsOfStone.x86_64</code></pre>
+      </article>
+    </div>
+    <p class="aside" lang="en">No macOS build yet. The game needs a graphics card with Vulkan for its lighting; see <a href="#help">Help</a> if it won't start.</p>
+    <p class="aside" lang="pt">Ainda não há versão para macOS. O jogo precisa de placa de vídeo com Vulkan para a iluminação; veja a <a href="#help">Ajuda</a> se ele não abrir.</p>
+  </div>
+</section>
+
+<div class="band">
+  <figure>
+    <img src="img/gameplay.jpg" alt="Gameplay: a scout bandit waiting at his post on a downtown street, with the health and level panel at the top left" width="1600" height="900">
+    <figcaption>
+      <div class="wrap">
+        <span class="zone"><b lang="en">Downtown Streets</b><b lang="pt">Ruas do Centro</b> <span class="lv" lang="en">- bandits +0 levels</span><span class="lv" lang="pt">- bandidos +0 níveis</span></span>
+      </div>
+    </figcaption>
+  </figure>
+</div>
+
+<section id="classes">
+  <div class="wrap">
+    <div class="head">
+      <h2><span lang="en">Four classes</span><span lang="pt">Quatro classes</span></h2>
+      <p lang="en">None of them is the best one. Each player picks a class, a colour and a name on the title screen. The gap grows with level: at level 10 the Guardian has 412 health against the Marksman's 203, while the Marksman hits for 64 against 29.</p>
+      <p lang="pt">Nenhuma é a melhor. Cada jogador escolhe classe, cor e nome na tela inicial. A diferença cresce com o nível: no nível 10 o Guardião tem 412 de vida contra 203 do Atirador, enquanto o Atirador ataca 64 contra 29.</p>
+    </div>
+    <div class="classes-grid">
+      <article class="class" style="--c: var(--c-marksman)">
+        <h3><span lang="en">Marksman</span><span lang="pt">Atirador</span></h3>
+        <p class="role" lang="en">Hits hard from far away, but goes down fast.</p>
+        <p class="role" lang="pt">Machuca de longe, mas cai rápido.</p>
+        <div class="stats">
+          <div class="stat"><span class="sk"><span lang="en">Health</span><span lang="pt">Vida</span></span><span class="sv">95</span><span class="bar" aria-hidden="true"><i style="--v: 59%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Attack</span><span lang="pt">Ataque</span></span><span class="sv">19</span><span class="bar" aria-hidden="true"><i style="--v: 100%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Defense</span><span lang="pt">Defesa</span></span><span class="sv">3</span><span class="bar" aria-hidden="true"><i style="--v: 30%"></i></span></div>
+        </div>
+        <div class="ability">
+          <span class="k"><span lang="en">Ability · Q</span><span lang="pt">Habilidade · Q</span></span>
+          <b><span lang="en">Piercing Shot</span><span lang="pt">Tiro Perfurante</span></b>
+          <p lang="en">A shot that goes through up to 4 bandits in a line.</p>
+          <p lang="pt">Um tiro que atravessa até 4 bandidos em linha.</p>
+        </div>
+      </article>
+      <article class="class" style="--c: var(--c-guardian)">
+        <h3><span lang="en">Guardian</span><span lang="pt">Guardião</span></h3>
+        <p class="role" lang="en">Takes a beating and holds the line.</p>
+        <p class="role" lang="pt">Aguenta pancada e segura a linha.</p>
+        <div class="stats">
+          <div class="stat"><span class="sk"><span lang="en">Health</span><span lang="pt">Vida</span></span><span class="sv">160</span><span class="bar" aria-hidden="true"><i style="--v: 100%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Attack</span><span lang="pt">Ataque</span></span><span class="sv">11</span><span class="bar" aria-hidden="true"><i style="--v: 58%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Defense</span><span lang="pt">Defesa</span></span><span class="sv">10</span><span class="bar" aria-hidden="true"><i style="--v: 100%"></i></span></div>
+        </div>
+        <div class="ability">
+          <span class="k"><span lang="en">Ability · Q</span><span lang="pt">Habilidade · Q</span></span>
+          <b><span lang="en">Shield</span><span lang="pt">Escudo</span></b>
+          <p lang="en">Triples your defense for 7 seconds.</p>
+          <p lang="pt">Triplica a defesa por 7 segundos.</p>
+        </div>
+      </article>
+      <article class="class" style="--c: var(--c-scout)">
+        <h3><span lang="en">Scout</span><span lang="pt">Batedor</span></h3>
+        <p class="role" lang="en">Fast, gets in close and leaves before taking hits.</p>
+        <p class="role" lang="pt">Rápido, chega perto e some antes de apanhar.</p>
+        <div class="stats">
+          <div class="stat"><span class="sk"><span lang="en">Health</span><span lang="pt">Vida</span></span><span class="sv">105</span><span class="bar" aria-hidden="true"><i style="--v: 66%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Attack</span><span lang="pt">Ataque</span></span><span class="sv">15</span><span class="bar" aria-hidden="true"><i style="--v: 79%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Defense</span><span lang="pt">Defesa</span></span><span class="sv">4</span><span class="bar" aria-hidden="true"><i style="--v: 40%"></i></span></div>
+        </div>
+        <div class="ability">
+          <span class="k"><span lang="en">Ability · Q</span><span lang="pt">Habilidade · Q</span></span>
+          <b><span lang="en">Dash</span><span lang="pt">Arrancada</span></b>
+          <p lang="en">Nearly doubles your speed for 4 s, immune at the start.</p>
+          <p lang="pt">Quase dobra a velocidade por 4 s e fica imune no começo.</p>
+        </div>
+      </article>
+      <article class="class" style="--c: var(--c-medic)">
+        <h3><span lang="en">Medic</span><span lang="pt">Médico</span></h3>
+        <p class="role" lang="en">Heals the team. Weak on their own.</p>
+        <p class="role" lang="pt">Segura a equipe viva. Sozinho rende pouco.</p>
+        <div class="stats">
+          <div class="stat"><span class="sk"><span lang="en">Health</span><span lang="pt">Vida</span></span><span class="sv">125</span><span class="bar" aria-hidden="true"><i style="--v: 78%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Attack</span><span lang="pt">Ataque</span></span><span class="sv">12</span><span class="bar" aria-hidden="true"><i style="--v: 63%"></i></span></div>
+          <div class="stat"><span class="sk"><span lang="en">Defense</span><span lang="pt">Defesa</span></span><span class="sv">6</span><span class="bar" aria-hidden="true"><i style="--v: 60%"></i></span></div>
+        </div>
+        <div class="ability">
+          <span class="k"><span lang="en">Ability · Q</span><span lang="pt">Habilidade · Q</span></span>
+          <b><span lang="en">Area Heal</span><span lang="pt">Cura em Área</span></b>
+          <p lang="en">Restores 35% health to everyone within 12 m, yourself included.</p>
+          <p lang="pt">Devolve 35% da vida de quem estiver a até 12 m, você incluso.</p>
+        </div>
+      </article>
+    </div>
+    <figure class="classes-shot">
+      <img src="img/classes.jpg" alt="The four playable classes standing side by side" width="1600" height="900">
+    </figure>
+  </div>
+</section>
+
+<section id="world" style="padding-top: 0">
+  <div class="wrap">
+    <div class="head">
+      <h2><span lang="en">The city</span><span lang="pt">A cidade</span></h2>
+      <p lang="en">Five regions around the survivors' camp. The further out you go, the more levels the bandits have over you.</p>
+      <p lang="pt">Cinco regiões em volta do acampamento dos sobreviventes. Quanto mais longe, mais níveis os bandidos têm acima de você.</p>
+    </div>
+    <div class="regions">
+      <div class="region">
+        <div class="shot"><img src="img/camp.jpg" alt="The player walking up to Nara, the mechanic, in the survivors' camp at night" width="1600" height="900"></div>
+        <div class="txt">
+          <span class="zone"><b lang="en">Survivors' Camp</b><b lang="pt">Acampamento dos Sobreviventes</b> <span class="safe" lang="en">- safe area</span><span class="safe" lang="pt">- área segura</span></span>
+          <h3><span lang="en">Where it starts</span><span lang="pt">Onde tudo começa</span></h3>
+          <p lang="en">Elias, Nara, Doctor Vilas and Sergeant Bruno each run their own line of quests. A <code>!</code> over a settler means work to take, a <code>?</code> means a quest to hand in.</p>
+          <p lang="pt">Elias, Nara, Doutor Vilas e Sargento Bruno cuidam cada um da sua linha de missões. Um <code>!</code> sobre o morador quer dizer missão para aceitar; um <code>?</code>, missão para entregar.</p>
+        </div>
+      </div>
+      <div class="region">
+        <div class="shot"><img src="img/scrapyard.jpg" alt="The scrapyard seen from above" width="1600" height="900"></div>
+        <div class="txt">
+          <span class="zone"><b lang="en">The Scrapyard</b><b lang="pt">Ferro Velho</b> <span class="lv" lang="en">- bandits +1 level</span><span class="lv" lang="pt">- bandidos +1 nível</span></span>
+          <h3><span lang="en">Nara's old workshop</span><span lang="pt">A oficina da Nara</span></h3>
+          <p lang="en">Lookouts, a scout and a support bandit hold it in packs. The support heals their own pack, so take them down first.</p>
+          <p lang="pt">Vigias, um batedor e um suporte guardam o lugar em bandos. O suporte cura o próprio bando, então derrube ele primeiro.</p>
+        </div>
+      </div>
+      <div class="region">
+        <div class="shot"><img src="img/tower.jpg" alt="The north tower rising over the ruins" width="1600" height="900"></div>
+        <div class="txt">
+          <span class="zone"><b lang="en">North Tower</b><b lang="pt">Torre do Norte</b> <span class="lv" lang="en">- bandits +2 levels</span><span class="lv" lang="pt">- bandidos +2 níveis</span></span>
+          <h3><span lang="en">Marksmen up high</span><span lang="pt">Atiradores lá no alto</span></h3>
+          <p lang="en">Two marksmen per pack and the Watchmaster on top, who calls the whole tower down on you.</p>
+          <p lang="pt">Dois atiradores por bando e o Vigia-Mor no alto, que chama a torre inteira para cima de você.</p>
+        </div>
+      </div>
+      <div class="region">
+        <div class="shot"><img src="img/bandit-camp.jpg" alt="The bandit camp, the most dangerous region of the map" width="1600" height="900"></div>
+        <div class="txt">
+          <span class="zone"><b lang="en">Bandit Camp</b><b lang="pt">Acampamento dos Bandidos</b> <span class="lv" lang="en">- bandits +4 levels</span><span class="lv" lang="pt">- bandidos +4 níveis</span></span>
+          <h3><span lang="en">The Commander's yard</span><span lang="pt">O pátio do Comandante</span></h3>
+          <p lang="en">Full packs with a leader, marksman, scout, support and lookout. The leaders here are +6.</p>
+          <p lang="pt">Bandos completos com líder, atirador, batedor, suporte e vigia. Os líderes daqui são +6.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule">
+      <div>
+        <h3><span lang="en">You start the fight</span><span lang="pt">Quem começa a briga é você</span></h3>
+        <p lang="en">Bandits stay at their post however close you get. They only fight once they've been hit, and then they go after whoever shot them. Run far enough and they go back to their post. You can cross a high-level region without a fight and pick which pack to take on.</p>
+        <p lang="pt">Os bandidos ficam parados no posto, por mais perto que você chegue. Só entram em combate depois de levar o primeiro tiro, e aí vão atrás de quem atirou. Fuja longe o bastante e eles voltam ao posto. Dá para atravessar uma região de nível alto sem brigar e escolher qual bando enfrentar.</p>
+      </div>
+      <div>
+        <h3><span lang="en">The city keeps up with you</span><span lang="pt">A cidade acompanha você</span></h3>
+        <p lang="en">Each bandit's level is rolled when it appears: your level, plus the region's bonus, plus or minus one. Go back to an early street at level 12 and you meet level 12 bandits.</p>
+        <p lang="pt">O nível de cada bandido é sorteado quando ele aparece: o seu nível, mais o ajuste da região, mais ou menos um. Volte a uma rua do começo no nível 12 e os bandidos estarão no nível 12.</p>
+        <pre><code><span lang="en">bandit level = your level + region + (−1 … +1)</span><span lang="pt">nível do bandido = seu nível + região + (−1 … +1)</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bosses" style="padding-top: 0">
+  <div class="wrap">
+    <div class="head">
+      <h2><span lang="en">Three bosses</span><span lang="pt">Três chefes</span></h2>
+      <p lang="en">A boss changes phase as its health drops, and each phase rewrites its speed, damage, defense and rate of fire. A bar at the top of the screen shows which phase it's in.</p>
+      <p lang="pt">O chefe muda de fase conforme a vida cai, e cada fase reescreve velocidade, dano, defesa e ritmo de tiro. Uma barra no alto da tela mostra em que fase ele está.</p>
+    </div>
+    <ul class="bosses">
+      <li class="boss">
+        <h3><span lang="en">Scrapyard Foreman</span><span lang="pt">Capataz do Ferro Velho</span><small lang="en">The Scrapyard</small><small lang="pt">Ferro Velho</small></h3>
+        <p lang="en">Below 55% health he throws his wrench away, gets faster and stronger, and calls in scouts.</p>
+        <p lang="pt">Abaixo de 55% da vida ele joga a chave fora, fica mais rápido e mais forte e chama batedores.</p>
+        <span class="phases" aria-label="2 phases"><i></i><i></i><span lang="en">2 phases</span><span lang="pt">2 fases</span></span>
+      </li>
+      <li class="boss">
+        <h3><span lang="en">Tower Watchmaster</span><span lang="pt">Vigia-Mor da Torre</span><small lang="en">North Tower</small><small lang="pt">Torre do Norte</small></h3>
+        <p lang="en">Shoots from far away. Below 70% he calls down the tower marksmen; below 35% he comes down to fight up close.</p>
+        <p lang="pt">Atira de longe. Abaixo de 70% chama os atiradores da torre; abaixo de 35% desce para o corpo a corpo.</p>
+        <span class="phases" aria-label="3 phases"><i></i><i></i><i></i><span lang="en">3 phases</span><span lang="pt">3 fases</span></span>
+      </li>
+      <li class="boss">
+        <h3><span lang="en">The Commander</span><span lang="pt">O Comandante</span><small lang="en">Bandit Camp</small><small lang="pt">Acampamento dos Bandidos</small></h3>
+        <p lang="en">Calls reinforcements in every phase. When he spends his last round, he drops his guard and charges.</p>
+        <p lang="pt">Chama reforços em cada fase. Quando gasta a última munição, larga a guarda e parte para cima.</p>
+        <span class="phases" aria-label="3 phases"><i></i><i></i><i></i><span lang="en">3 phases</span><span lang="pt">3 fases</span></span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="coop" style="padding-top: 0">
+  <div class="wrap">
+    <div class="head">
+      <h2><span lang="en">Play together</span><span lang="pt">Jogue junto</span></h2>
+      <p lang="en">Quests belong to the team: anyone can take or hand them in, and everyone gets the reward. Health, XP and level stay your own.</p>
+      <p lang="pt">As missões são da equipe: qualquer um aceita ou entrega, e a recompensa vai para todos. Vida, XP e nível são de cada um.</p>
+    </div>
+    <div class="coop">
+      <div>
+        <h3><span lang="en">One screen</span><span lang="pt">Uma tela</span></h3>
+        <p lang="en">Pick how many are playing on the title screen. Two players split top and bottom; three or four get a quarter each, with their own camera and their own panel.</p>
+        <p lang="pt">Escolha quantos vão jogar na tela inicial. Com dois a tela divide em cima e embaixo; com três ou quatro, cada um ganha um quadrante, com câmera e painel próprios.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th><span lang="en">Player</span><span lang="pt">Jogador</span></th><th><span lang="en">Controls</span><span lang="pt">Controle</span></th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><span lang="en"><kbd>WASD</kbd> + mouse, left button shoots, <kbd>Q</kbd> ability, <kbd>E</kbd> talk</span><span lang="pt"><kbd>WASD</kbd> + mouse, botão esquerdo atira, <kbd>Q</kbd> habilidade, <kbd>E</kbd> conversa</span></td></tr>
+              <tr><td>2</td><td><span lang="en">Arrow keys, right <kbd>Ctrl</kbd> shoots, numpad <kbd>0</kbd> ability, <kbd>Enter</kbd> talk</span><span lang="pt">Setas, <kbd>Ctrl</kbd> direito atira, <kbd>0</kbd> do numérico habilidade, <kbd>Enter</kbd> conversa</span></td></tr>
+              <tr><td>3, 4</td><td><span lang="en">Gamepad: sticks, <kbd>RB</kbd> shoots, <kbd>B</kbd> ability, <kbd>X</kbd> talk</span><span lang="pt">Controle: analógicos, <kbd>RB</kbd> atira, <kbd>B</kbd> habilidade, <kbd>X</kbd> conversa</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3><span lang="en">Two computers</span><span lang="pt">Dois computadores</span></h3>
+        <p lang="en">On the same home network, one computer clicks <b>Host</b> and reads out the IP it shows. The other types that IP and clicks <b>Join</b>. Both can use split screen at once, up to 4 characters in the same world.</p>
+        <p lang="pt">Na mesma rede de casa, um computador clica em <b>Hospedar</b> e diz o IP que aparece. O outro digita esse IP e clica em <b>Entrar</b>. Os dois podem usar tela dividida ao mesmo tempo, até 4 personagens no mesmo mundo.</p>
+        <p lang="en">The host runs the bandits and keeps the quest state. Both computers build the map from the same seed, so you see exactly the same city.</p>
+        <p lang="pt">Quem hospeda controla os bandidos e guarda as missões. Os dois computadores geram o mapa a partir da mesma semente, então todo mundo vê exatamente a mesma cidade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="help" style="padding-top: 0">
+  <div class="wrap">
+    <div class="head">
+      <h2><span lang="en">Help</span><span lang="pt">Ajuda</span></h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary><span lang="en">The game won't start</span><span lang="pt">O jogo não abre</span></summary>
+        <div class="a">
+          <p lang="en">The lighting needs a graphics card with Vulkan. On older cards, start the game from a terminal with the compatibility renderer. It then runs on almost any card, without the fog, reflections and ambient occlusion.</p>
+          <p lang="pt">A iluminação precisa de placa de vídeo com Vulkan. Em placas mais antigas, abra o jogo pelo terminal com o renderizador de compatibilidade. Assim ele roda em quase qualquer placa, só que sem a neblina, os reflexos e a oclusão de ambiente.</p>
+          <pre><code>RuinsOfStone.exe --rendering-driver opengl3</code></pre>
+        </div>
+      </details>
+      <details>
+        <summary><span lang="en">It stutters</span><span lang="pt">Está travando</span></summary>
+        <div class="a">
+          <p lang="en">Press <kbd>F1</kbd> during a game to drop to Low graphics straight away; press it again to go back. You can also pick Low or Medium at the top left of the title screen. The FPS counter at the top right turns orange below 45.</p>
+          <p lang="pt">Aperte <kbd>F1</kbd> durante a partida para cair no gráfico Baixo na hora; aperte de novo para voltar. Também dá para escolher Baixo ou Médio no canto superior esquerdo da tela inicial. O contador de FPS no canto superior direito fica laranja abaixo de 45.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span lang="en">Windows says "Windows protected your PC"</span><span lang="pt">O Windows diz "O Windows protegeu o seu PC"</span></summary>
+        <div class="a">
+          <p lang="en">That warning appears for any program without a paid code signature. Click <b>More info</b>, then <b>Run anyway</b>. It only asks the first time.</p>
+          <p lang="pt">Esse aviso aparece para qualquer programa sem assinatura digital paga. Clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>. Ele só pergunta na primeira vez.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span lang="en">The other computer can't join</span><span lang="pt">O outro computador não consegue entrar</span></summary>
+        <div class="a">
+          <p lang="en">The host has to allow port <code>27015</code> through its firewall. On Windows, a prompt usually appears the first time you host: tick <b>Private networks</b>. Both computers need to be on the same network.</p>
+          <p lang="pt">O computador que hospeda precisa liberar a porta <code>27015</code> no firewall. No Windows, costuma aparecer um aviso na primeira vez que você hospeda: marque <b>Redes privadas</b>. Os dois computadores precisam estar na mesma rede.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span lang="en">The camera won't turn</span><span lang="pt">A câmera não gira</span></summary>
+        <div class="a">
+          <p lang="en">You probably pressed <kbd>Esc</kbd>, which releases the mouse. Click anywhere in the game window to get it back.</p>
+          <p lang="pt">Você provavelmente apertou <kbd>Esc</kbd>, que solta o mouse da janela. Clique em qualquer lugar da tela do jogo para voltar.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span lang="en">How do I switch to Portuguese?</span><span lang="pt">Como troco o jogo para português?</span></summary>
+        <div class="a">
+          <p lang="en">The game opens in English. The language switch is at the top right of the title screen. It changes everything at once and is remembered for next time.</p>
+          <p lang="pt">O jogo abre em inglês. A troca de idioma fica no canto superior direito da tela inicial, muda tudo na hora e fica guardada para a próxima vez.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="favicon.svg" alt="" width="24" height="24" style="width:24px;height:24px">Ruins of Stone</a>
+    <span lang="en">Made with <a href="https://godotengine.org/">Godot Engine</a> 4.3. Free to play.</span>
+    <span lang="pt">Feito com a <a href="https://godotengine.org/">Godot Engine</a> 4.3. Grátis para jogar.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  // --- language: saved choice, then the browser's, then English ---------
+  function setLang(lang, save) {
+    root.setAttribute("data-lang", lang);
+    root.lang = lang === "pt" ? "pt-BR" : "en";
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === lang));
+    });
+    if (save) { try { localStorage.setItem("ros-lang", lang); } catch (e) {} }
+  }
+  var saved = null;
+  try { saved = localStorage.getItem("ros-lang"); } catch (e) {}
+  var browser = (navigator.languages && navigator.languages[0]) || navigator.language || "en";
+  setLang(saved === "pt" || saved === "en" ? saved : (/^pt\b/i.test(browser) ? "pt" : "en"), false);
+  document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-set-lang"), true); });
+  });
+
+  // --- operating system: point the big button at the right file ---------
+  var ua = navigator.userAgent || "";
+  var os = /Android|iPhone|iPad|iPod/i.test(ua) ? "mobile"
+         : /Windows/i.test(ua) ? "win"
+         : /Macintosh|Mac OS X/i.test(ua) ? "mac"
+         : /Linux|X11|CrOS/i.test(ua) ? "linux" : "win";
+  var btn = document.getElementById("hero-btn");
+  var other = document.getElementById("hero-other");
+  if (os === "linux") {
+    btn.href = btn.href.replace("Windows.zip", "Linux.zip");
+    document.querySelectorAll(".os-name").forEach(function (s) { s.textContent = "Linux"; });
+    document.querySelector(".os-size").textContent = ".zip · 23 MB";
+    other.innerHTML = '<span lang="en">Windows version</span><span lang="pt">Versão para Windows</span>';
+  }
+  if (os === "mac" || os === "mobile") {
+    document.getElementById("note-os").hidden = false;
+  }
+  var mine = document.getElementById(os === "linux" ? "pf-linux" : "pf-win");
+  if (os === "win" || os === "linux") {
+    mine.classList.add("mine");
+    mine.querySelector(".tag").hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

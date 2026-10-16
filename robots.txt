@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://knisstech.github.io/pub/sitemap.xml
